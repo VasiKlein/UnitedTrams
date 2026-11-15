@@ -351,7 +351,7 @@ function toast(m){const e=$("toast");e.textContent=m;e.classList.add("on");clear
 
 /* ================= СЕРВЕР ================= */
 /* Для синхронизации между устройствами вставьте сюда конфиг Firebase (Project settings → Web app) */
-const CFG={apiKey:"",authDomain:"",projectId:"",appId:""};
+const CFG={apiKey:"AIzaSyBUcqemiyed6ctB5BVY6dRrPFSUYKuFywE",authDomain:"unitedtrams.firebaseapp.com",projectId:"unitedtrams",appId:"1:145211231907:web:a836125dc8c32dd663b916"};
 const FB=!!CFG.apiKey;let API={};
 const mail=n=>[...n.trim().toLowerCase()].map(c=>c.codePointAt(0).toString(16)).join("")+"@utrams.app";
 const ls=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||"null"):localStorage.setItem(k,JSON.stringify(v));
