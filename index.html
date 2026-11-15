@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>United Trams — Кедровское трамвайное управление</title>
+<link rel="icon" href="https://i.postimg.cc/bYb0sKnD/Vector.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--c1:#454753;--c2:#9C9EAC;--c3:#38393F;--text:#EEEFF4;--muted:#9C9EAC;--line:rgba(156,158,172,.2);--glass:rgba(69,71,83,.3);--r:26px;
+--hero-img:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:"Unbounded",system-ui,sans-serif;background:var(--c3);color:var(--text);line-height:1.55;font-size:14px;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);animation:drift 28s ease-in-out infinite alternate}
+.b1{width:48vw;height:48vw;background:var(--c1);left:-12vw;top:30vh;opacity:.6}
+.b2{width:36vw;height:36vw;background:var(--c2);right:-10vw;top:60vh;opacity:.18;animation-delay:-10s}
+@keyframes drift{to{transform:translate3d(10vw,-8vh,0) scale(1.2)}}
+.glass{background:var(--glass);backdrop-filter:blur(17px) saturate(140%);-webkit-backdrop-filter:blur(17px) saturate(140%);border:1px solid var(--line);border-radius:var(--r);position:relative;box-shadow:0 24px 50px -28px #000,inset 0 1px 0 rgba(255,255,255,.06)}
+.hov{overflow:hidden}
+.hov::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(156,158,172,.2),transparent 60%)}
+.hov:hover::after{opacity:1}
+/* страницы */
+.page{display:none;min-height:100vh;padding-bottom:130px}
+.page.on{display:block;animation:pg .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes pg{from{opacity:0;transform:translateY(22px);filter:blur(10px)}}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* верх */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top)) 18px 0;pointer-events:none}
+.top>*{pointer-events:auto}
+.mark{width:46px;height:46px;border-radius:50%;display:grid;place-items:center}
+.mark img{width:26px;height:26px;object-fit:contain}
+.lang{display:flex;padding:4px;border-radius:999px;position:relative}
+.lang button{font:600 11px "Unbounded";color:var(--muted);background:none;border:0;padding:9px 16px;border-radius:999px;cursor:pointer;position:relative;z-index:1;transition:color .3s}
+.lang button.on{color:var(--c3)}
+.lang i{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--c2);border-radius:999px;transition:transform .4s cubic-bezier(.3,1.3,.5,1)}
+.lang.en i{transform:translateX(100%)}
+/* hero */
+.hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;border-radius:0 0 40px 40px}
+.hero .pic{position:absolute;inset:0;background:var(--hero-img) center/cover,linear-gradient(#5c5e6b,#2d2e34);filter:grayscale(1);animation:kb 24s ease-in-out infinite alternate}
+@keyframes kb{to{transform:scale(1.08)}}
+.hero svg.sc{position:absolute;inset:0;width:100%;height:100%;animation:kb 24s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(56,57,63,.1),rgba(56,57,63,.2) 40%,var(--c3) 100%)}
+.hero .wrap{width:100%;max-width:none;margin:0;padding:0 28px}
+.hero .in{position:relative;z-index:2;padding:0 0 46px;width:100%;text-align:left}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#d9dae2;padding:9px 16px;border-radius:999px;margin-bottom:22px}
+.pill b{width:6px;height:6px;border-radius:50%;background:var(--c2);box-shadow:0 0 0 0 var(--c2);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px transparent}}
+h1{font-size:clamp(2.4rem,8vw,5.6rem);line-height:.98;font-weight:600;letter-spacing:-.04em}
+.hsub{color:#c9cad4;margin:20px 0 24px;max-width:30rem;font-weight:300}
+.chips{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{padding:10px 16px;border-radius:999px;font-size:11px;font-weight:300}
+.chip b{font-weight:600;margin-right:5px}
+.down{margin-left:auto;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;border:1px solid var(--line);color:var(--text);transition:.3s}
+.down:hover{transform:translateY(4px)}
+.rise>*{opacity:0;transform:translateY(24px);filter:blur(8px);animation:rs .9s cubic-bezier(.2,.7,.2,1) forwards}
+.rise>*:nth-child(2){animation-delay:.12s}.rise>*:nth-child(3){animation-delay:.24s}.rise>*:nth-child(4){animation-delay:.36s}
+@keyframes rs{to{opacity:1;transform:none;filter:none}}
+/* карточки */
+.card{padding:26px;margin-top:18px}
+.lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+h2{font-size:clamp(1.2rem,3vw,1.7rem);font-weight:600;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
+.card p{color:#b9bac6;font-weight:300;font-size:13px;max-width:46rem;margin-bottom:10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.tile{padding:16px 18px;border-radius:18px;background:rgba(56,57,63,.48);border:1px solid var(--line)}
+.tile:hover{translate:0 -3px}
+.tile b{display:block;font-size:15px;font-weight:600}.tile small{color:var(--muted);font-size:10px;font-weight:300}
+.pagehead{padding:110px 0 6px}
+.pagehead h1{font-size:clamp(1.8rem,5vw,3.2rem)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* кастомный dropdown */
+.dd{position:relative;z-index:5}
+.dd.open{z-index:20}
+.dd .lab{margin-bottom:8px}
+.ddb{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;font:400 13px "Unbounded";color:var(--text);padding:15px 18px;border-radius:18px;border:1px solid var(--line);background:rgba(56,57,63,.65);cursor:pointer;transition:.3s;text-align:left}
+.ddb:hover,.dd.open .ddb{border-color:rgba(156,158,172,.55);background:rgba(69,71,83,.8)}
+.ddb svg{flex:none;transition:transform .35s}
+.dd.open .ddb svg{transform:rotate(180deg)}
+.ddm{position:absolute;left:0;right:0;top:calc(100% + 8px);padding:8px;border-radius:20px;background:rgba(56,57,63,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line);box-shadow:0 30px 60px -20px #000;opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);transform-origin:top;transition:.3s cubic-bezier(.2,.8,.3,1);max-height:300px;overflow:auto}
+.dd.open .ddm{opacity:1;visibility:visible;transform:none}
+.ddo{display:flex;align-items:center;gap:12px;width:100%;font:300 12px "Unbounded";color:#cfd0da;background:none;border:0;padding:12px 14px;border-radius:13px;cursor:pointer;text-align:left;transition:.2s}
+.ddo:hover{background:rgba(156,158,172,.16);color:#fff;padding-left:18px}
+.ddo.sel{background:var(--c2);color:var(--c3);font-weight:600}
+.ddo b{display:grid;place-items:center;min-width:28px;height:28px;border-radius:9px;background:var(--c1);color:var(--text);font-size:12px}
+.ddo.sel b{background:var(--c3)}
+/* маршрут */
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 22px}
+@keyframes gr{from{transform:scaleY(0)}}
+.stops{list-style:none;margin-top:6px}
+.stops li{position:relative;display:flex;align-items:center;gap:12px;min-height:58px;padding-left:38px;font-size:13px;animation:in2 .6s cubic-bezier(.2,.7,.2,1) both}
+.stops li::before{content:"";position:absolute;left:8px;top:50%;width:2px;height:100%;background:rgba(156,158,172,.4);transform-origin:top;animation:gr .5s ease both;animation-delay:inherit}
+.stops li:last-child::before{display:none}
+.stops li::after{content:"";position:absolute;left:3px;top:calc(50% - 6px);width:12px;height:12px;border-radius:50%;background:var(--c3);border:2px solid var(--c2);z-index:1}
+.stops li.e::after{left:0;top:calc(50% - 9px);width:18px;height:18px;background:var(--c2);border-color:var(--c3);box-shadow:0 0 0 4px rgba(156,158,172,.22)}
+.stops em{font-style:normal;color:var(--muted);font-size:10px;margin-left:auto}
+.sb{display:inline-flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:500;padding:9px 16px;border-radius:999px;background:rgba(156,158,172,.16);border:1px solid rgba(156,158,172,.4);transition:background .3s,color .3s,translate .3s}
+.sb:hover,.sb:focus-visible{background:var(--c2);color:var(--c3);translate:4px 0;outline:none}
+.sb svg{transition:translate .3s}.sb:hover svg{translate:4px 0}
+.hint{margin-top:14px;font-size:11px!important;color:var(--muted)!important}
+.dep{display:flex;justify-content:space-between;padding:14px 18px;border-radius:16px;background:rgba(56,57,63,.6);margin-top:8px;font-size:13px;animation:in2 .5s cubic-bezier(.2,.7,.2,1) both}
+.dep:first-child{background:var(--c2);color:var(--c3);font-weight:600}
+.clock{font-size:clamp(2.4rem,7vw,3.6rem);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.fare{font-size:2rem;font-weight:600;margin:6px 0 10px}
+.card ul{padding-left:18px;color:#b9bac6;font-weight:300;font-size:13px;display:grid;gap:7px}
+.qa{margin-top:10px;border-radius:20px;border:1px solid var(--line);background:rgba(56,57,63,.5);transition:background .4s,border-color .4s}
+.qa.open{background:rgba(69,71,83,.7);border-color:rgba(156,158,172,.45)}
+.qb{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font:400 13px "Unbounded";color:var(--text);background:none;border:0;padding:18px 20px;cursor:pointer;text-align:left}
+.qb i{position:relative;flex:none;width:28px;height:28px;border-radius:50%;background:var(--c1);transition:transform .5s cubic-bezier(.3,1.4,.5,1),background .3s}
+.qb i::before,.qb i::after{content:"";position:absolute;left:8px;right:8px;top:13px;height:2px;border-radius:2px;background:var(--text);transition:transform .4s}
+.qb i::after{transform:rotate(90deg)}
+.qa.open .qb i{transform:rotate(180deg);background:var(--c2)}
+.qa.open .qb i::before,.qa.open .qb i::after{background:var(--c3)}
+.qa.open .qb i::after{transform:rotate(0)}
+.qc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.8,.2,1)}
+.qc>div{overflow:hidden;min-height:0}
+.qc p{padding:0 20px 20px;margin:0;opacity:0;transform:translateY(-12px);filter:blur(8px);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1),filter .45s}
+.qa.open .qc{grid-template-rows:1fr}
+.qa.open .qc p{opacity:1;transform:none;filter:none;transition-delay:.12s}
+.back{display:inline-flex;align-items:center;gap:10px;font:500 11px "Unbounded";color:var(--text);padding:11px 18px;border-radius:999px;text-decoration:none;margin-bottom:22px;transition:translate .3s}
+.back:hover{translate:-4px 0}
+#stN,#pH{font-size:clamp(1.5rem,4.2vw,2.8rem);overflow-wrap:anywhere}
+.tram{position:absolute;right:-2%;bottom:110px;width:min(62vw,780px);z-index:1;pointer-events:none;opacity:0;filter:brightness(0) invert(.78);animation:drive 2.4s .3s cubic-bezier(.15,.8,.2,1) forwards,bob 6s 2.8s ease-in-out infinite alternate}
+@keyframes drive{from{opacity:0;transform:translateX(35%);filter:brightness(0) invert(.78) blur(10px)}to{opacity:.85;transform:none;filter:brightness(0) invert(.78) blur(0)}}
+@keyframes bob{from{opacity:.85;transform:translateY(0)}to{opacity:.85;transform:translateY(-8px)}}
+.wm{position:absolute;right:-18px;bottom:-34px;width:190px;opacity:.1;filter:brightness(0) invert(.75);pointer-events:none;transform:rotate(-12deg);transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .6s}
+.hov:hover .wm{transform:rotate(-3deg) scale(1.08);opacity:.18}
+.pass{margin-top:18px;transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.pass img{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 30px 50px -28px #000}
+@media(max-width:700px){.tram{width:92vw;bottom:230px;opacity:.4!important;animation:drive 2.4s .3s forwards}}
+.car{margin-top:8px;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.vw{position:relative;width:100%;max-width:1200px;margin:0 auto;height:56vw;border-radius:30px;overflow:hidden;border:1px solid var(--line);background:var(--c1);cursor:grab;outline:none;box-shadow:0 40px 70px -40px #000;transition:height .9s cubic-bezier(.77,0,.18,1)}
+.vw:active{cursor:grabbing}
+.vw::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.18),transparent 22%,transparent 72%,rgba(0,0,0,.4))}
+.fr{position:absolute;inset:0;display:none;background:var(--c1)}.fr.on{display:block}
+.fr .bgb{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(28px) brightness(.55);pointer-events:none}
+.pi{position:relative;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+.im{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.ph{display:grid;place-items:center;background:linear-gradient(var(--g,150deg),#5d5f6d,#2f3036);position:relative;overflow:hidden}
+.ph img{position:absolute;width:70%;height:auto;object-fit:contain;opacity:.22;filter:brightness(0) invert(.8)}
+.ph span{position:relative;font-size:12px;color:#d4d5de;padding:10px 18px;border-radius:999px;background:rgba(56,57,63,.5);backdrop-filter:blur(10px)}
+.nv{position:absolute;top:50%;z-index:6;width:50px;height:50px;margin-top:-25px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;transition:background .3s,color .3s,transform .45s cubic-bezier(.3,1.5,.5,1)}
+.nv.l{left:16px}.nv.r{right:16px}
+.nv:hover{background:#fff;color:var(--c3);transform:scale(1.12)}
+.nv:active{transform:scale(.88)}
+.nv.l:hover svg{animation:nl .5s}.nv.r:hover svg{animation:nr .5s}
+@keyframes nl{50%{transform:translateX(-5px)}}@keyframes nr{50%{transform:translateX(5px)}}
+.nv:focus-visible,.dots button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.dots{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:6;display:flex;gap:8px;align-items:center;padding:9px 13px;border-radius:999px;background:rgba(20,21,25,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.dots button{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.5);cursor:pointer;transition:width .6s cubic-bezier(.3,1.5,.5,1),background .3s,transform .3s}
+.dots button:hover{background:#fff;transform:scale(1.3)}
+.dots button.on{width:30px;background:#fff;animation:dp .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes dp{40%{transform:scale(1.25,1.6)}}
+.cnt{position:absolute;top:14px;right:14px;z-index:6;font-size:11px;font-variant-numeric:tabular-nums;color:#fff;padding:8px 14px;border-radius:999px;background:rgba(20,21,25,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@media(max-width:520px){.nv{width:42px;height:42px;margin-top:-21px}.nv.l{left:10px}.nv.r{right:10px}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin-top:20px}
+.post{display:block;text-decoration:none;color:inherit;padding:0;animation:in2 .7s cubic-bezier(.2,.7,.2,1) var(--d) both;transition:translate .4s cubic-bezier(.2,.8,.2,1)}
+.post:hover{translate:0 -6px}
+.post .cv{aspect-ratio:16/10;overflow:hidden}.post .cv .im{transition:transform .9s cubic-bezier(.2,.8,.2,1)}.post:hover .cv .im{transform:scale(1.08)}
+.post .bd{padding:20px}.post h3{font-size:15px;font-weight:600;margin:4px 0 8px;line-height:1.3}
+.post p{font-size:12px;color:#b9bac6;font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.empty{color:var(--muted);margin-top:30px}
+#post .wrap{max-width:1500px}
+.ptx{margin-top:20px}.ptx p{font-size:14px;line-height:1.7;max-width:60rem;margin-bottom:14px}
+.apill{display:inline-flex;margin-top:24px;font:400 12px "Unbounded";color:var(--muted);padding:13px 20px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:rgba(69,71,83,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:color .3s,translate .3s,background .3s}
+.apill:hover{color:var(--text);translate:0 -3px;background:rgba(69,71,83,.55)}
+#admBtn{display:none;cursor:pointer;color:var(--text);border:1px solid var(--line);padding:0}
+#admBtn:hover svg{animation:spin 1s}
+@keyframes spin{to{transform:rotate(180deg)}}
+.ov{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:14px;background:rgba(35,36,41,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ov.on{display:grid;animation:fd .35s both}@keyframes fd{from{opacity:0}}
+.pn{width:min(780px,100%);max-height:92vh;overflow:auto;padding:26px;background:rgba(56,57,63,.86);animation:pop .6s cubic-bezier(.2,.9,.3,1.15) both}
+@keyframes pop{from{opacity:0;transform:translateY(34px) scale(.94);filter:blur(10px)}}
+.ph2{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pp{color:#b9bac6;font-weight:300;font-size:12px;margin-top:10px}
+.f{display:grid;gap:10px;margin-top:6px}
+.pn input,.pn textarea{font:300 13px "Unbounded";color:var(--text);background:rgba(56,57,63,.75);border:1px solid var(--line);border-radius:14px;padding:13px 15px;width:100%;transition:border-color .3s,background .3s;resize:vertical}
+.pn input:focus,.pn textarea:focus{outline:none;border-color:rgba(156,158,172,.7);background:rgba(69,71,83,.8)}
+.bt{font:500 12px "Unbounded";padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:rgba(69,71,83,.6);color:var(--text);cursor:pointer;transition:background .3s,color .3s,transform .3s}
+.bt:hover{background:rgba(156,158,172,.35);transform:translateY(-2px)}
+.bt.m,.bt.on{background:var(--c2);color:var(--c3);font-weight:600}
+.bt:focus-visible{outline:2px solid var(--c2);outline-offset:2px}
+.tbs,.row2{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+.msg{font-size:11px;min-height:16px;color:#e4e5ec}
+.li2{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border-radius:14px;background:rgba(56,57,63,.55);margin-top:8px;font-size:12px;animation:in2 .4s both}
+.rb{padding:16px;border-radius:18px;background:rgba(56,57,63,.5);border:1px solid var(--line);margin-top:12px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.fl{display:grid;gap:5px;font-size:10px;color:var(--muted);margin-top:6px}
+.toast{position:fixed;top:78px;left:50%;z-index:120;transform:translate(-50%,-20px);opacity:0;padding:12px 20px;border-radius:999px;font-size:12px;transition:.5s cubic-bezier(.3,1.4,.5,1);pointer-events:none;max-width:90vw}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:520px){.dock{--w:47px}.dock a,.dock i{height:46px}}
+@keyframes in2{from{opacity:0;transform:translateY(14px);filter:blur(6px)}}
+.rv{opacity:0;transform:translateY(34px) scale(.98);filter:blur(10px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .9s,translate .3s,background .4s,border-color .4s}
+.rv.in{opacity:1;transform:none;filter:none}
+.dd.open .ddo{animation:in2 .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*40ms)}
+.tip{position:absolute;bottom:calc(100% + 16px);left:50%;white-space:nowrap;font-size:11px;font-weight:500;padding:10px 16px;border-radius:999px;background:rgba(69,71,83,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);color:var(--text);pointer-events:none;opacity:0;transform:translate(-50%,10px) scale(.8);filter:blur(6px);transition:opacity .3s,transform .45s cubic-bezier(.3,1.5,.5,1),filter .3s}
+.tip::after{content:"";position:absolute;left:50%;bottom:-5px;width:9px;height:9px;background:rgba(69,71,83,.95);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(1);filter:none}
+/* нижняя шторка */
+.dock{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:70;display:flex;padding:6px;gap:4px;border-radius:999px;background:rgba(56,57,63,.48)}
+.dock{--w:60px}
+.dock a{width:var(--w);height:50px;display:grid;place-items:center;color:var(--muted);position:relative;z-index:1;border-radius:999px;transition:color .3s,transform .3s}
+.dock a:hover{transform:translateY(-3px)}
+.dock a.on{color:var(--text)}
+.dock a:focus-visible,.lang button:focus-visible,.ddb:focus-visible,.ddo:focus-visible,summary:focus-visible{outline:2px solid var(--c2);outline-offset:2px}
+.dock i{position:absolute;left:6px;top:6px;width:var(--w);transform:translateX(calc(var(--i,0)*(var(--w) + 4px)));height:50px;border-radius:999px;background:var(--c1);box-shadow:inset 0 1px 0 rgba(255,255,255,.1);transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.dock svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.row,.tiles{grid-template-columns:1fr}.hero{min-height:84vh}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rise>*{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div></div>
+
+<div class="top">
+  <div style="display:flex;gap:10px"><div class="glass mark"><img src="https://i.postimg.cc/bYb0sKnD/Vector.png" alt="UTrams"></div><button class="glass mark" id="admBtn" aria-label="Admin"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></button></div>
+  <div class="glass lang" id="lang"><i></i><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+</div>
+
+<!-- ГЛАВНАЯ -->
+<main class="page on" id="home">
+  <div class="hero">
+    <div class="pic"></div>
+    <svg class="sc" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#c9cad4" aria-hidden="true">
+      <g opacity=".55"><path d="M600 330 L-100 700M600 330 L120 700M600 330 L1300 700M600 330 L1080 700" stroke-width="2"/><path d="M600 330 L430 700M600 330 L770 700" stroke-width="3"/></g>
+      <g opacity=".35" stroke-width="2"><path d="M80 0V700M1120 0V700"/><path d="M0 110C300 190 900 190 1200 110M0 190C300 270 900 270 1200 190"/><path d="M300 0V330M900 0V330" stroke-width="1.4"/><path d="M0 60C300 130 900 130 1200 60" stroke-width="1.4"/></g>
+      <circle cx="600" cy="330" r="60" fill="#fff" stroke="none" opacity=".12"><animate attributeName="opacity" values=".06;.2;.06" dur="4s" repeatCount="indefinite"/></circle>
+    </svg>
+    <img class="tram" src="https://i.postimg.cc/pVcNLGgg/Siluet-sovremennogo-tramvaa.png" alt=""><div class="wrap"><div class="in rise">
+      <div class="glass pill"><b></b><span data-t="pill"></span></div>
+      <h1>United<br>Trams</h1>
+      <p class="hsub" data-t="hsub"></p>
+      <div class="chips">
+        <span class="glass chip" id="hc1"></span>
+        <span class="glass chip"><b data-t="c2b"></b><span data-t="c2"></span></span>
+        <a class="glass down" href="#about" id="dn" aria-label="↓"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+      </div>
+    </div></div>
+  </div>
+  <div class="wrap" id="about">
+    <div class="glass card hov"><div class="lab" data-t="aboutL"></div><h2 data-t="aboutH"></h2><p data-t="aboutP1"></p><p data-t="aboutP2"></p>
+      <div class="tiles">
+        <div class="tile"><b id="ts1"></b><small data-t="t1s"></small></div>
+        <div class="tile"><b id="ts2"></b><small data-t="t2s"></small></div>
+        <div class="tile"><b data-t="t3b"></b><small data-t="t3s"></small></div>
+        <div class="tile"><b>Roblox</b><small data-t="t4s"></small></div>
+      </div></div>
+    <div class="glass card hov"><div class="lab" data-t="gupL"></div><h2 data-t="gupH"></h2><p data-t="gupP"></p><img class="wm" src="https://i.postimg.cc/xTBWKkj4/Seryj-siluet-sosnovoj-siski-s-igolkami.png" alt=""></div>
+    <div style="text-align:center"><button class="apill" data-adm><span data-t="admQ"></span></button></div>
+  </div>
+</main>
+
+<!-- МАРШРУТЫ -->
+<main class="page" id="routes"><div class="wrap">
+  <div class="pagehead"><div class="lab" data-t="rL"></div><h1 data-t="rH"></h1></div>
+  <div class="glass card" id="rcard"></div>
+</div></main>
+
+<!-- РАСПИСАНИЕ -->
+<main class="page" id="schedule"><div class="wrap">
+  <div class="pagehead"><div class="lab" data-t="sL"></div><h1 data-t="sH"></h1></div>
+  <div class="glass card" id="scard"></div>
+  <div class="glass card"><div class="lab" data-t="nowL"></div><div class="clock" id="clock">--:--</div><p id="state" style="margin-top:12px"></p></div>
+</div></main>
+
+<!-- ОСТАНОВКА -->
+<main class="page" id="stop"><div class="wrap">
+  <div class="pagehead"><a class="back glass" href="#routes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg><span data-t="back"></span></a><div class="lab" data-t="stL"></div><h1 id="stN"></h1></div>
+  <div id="stBody"></div>
+</div></main>
+
+<!-- НОВОСТИ -->
+<main class="page" id="news"><div class="wrap"><div class="pagehead"><div class="lab" data-t="nwL"></div><h1 data-t="nwH"></h1></div><div class="grid" id="newsList"></div></div></main>
+<!-- РАЗРАБОТКА -->
+<main class="page" id="dev"><div class="wrap"><div class="pagehead"><div class="lab" data-t="dvL"></div><h1 data-t="dvH"></h1></div><div class="grid" id="devList"></div></div></main>
+<!-- ПОСТ -->
+<main class="page" id="post"><div class="wrap"><div class="pagehead"><a class="back glass" id="pbk" href="#news"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg><span></span></a><div class="lab" id="pD"></div><h1 id="pH"></h1></div><div id="pB"></div></div></main>
+
+<!-- ПАССАЖИРАМ -->
+<main class="page" id="info"><div class="wrap">
+  <div class="pagehead"><div class="lab" data-t="iL"></div><h1 data-t="iH"></h1></div>
+  <div class="row">
+    <div class="glass card hov"><div class="lab" data-t="f1L"></div><div class="fare">80 ₽</div><p data-t="f1P"></p></div>
+    <div class="glass card hov"><div class="lab" data-t="kL"></div><h2 data-t="kH"></h2><p data-t="kP"></p><div class="pass" id="pass"><img src="https://i.postimg.cc/ZKDJXKbG/Twitter-post-1.png" alt="Кедр"></div><img class="wm" src="https://i.postimg.cc/xTBWKkj4/Seryj-siluet-sosnovoj-siski-s-igolkami.png" alt=""></div>
+  </div>
+  <div class="glass card"><div class="lab" data-t="faqL"></div>
+    <div class="qa"><button class="qb" aria-expanded="false"><span data-t="q1"></span><i></i></button><div class="qc"><div><p data-t="a1"></p></div></div></div>
+    <div class="qa"><button class="qb" aria-expanded="false"><span data-t="q2"></span><i></i></button><div class="qc"><div><p data-t="a2"></p></div></div></div>
+    <div class="qa"><button class="qb" aria-expanded="false"><span data-t="q3"></span><i></i></button><div class="qc"><div><p data-t="a3"></p></div></div></div></div>
+  <div class="glass card hov"><div class="lab" data-t="cL"></div><h2>ГУП «Кедровское трамвайное управление»</h2><p data-t="cP"></p></div>
+  <div style="text-align:center"><button class="apill" data-adm><span data-t="admQ"></span></button></div>
+</div></main>
+
+<nav class="glass dock" id="dock" aria-label="Menu"><i></i>
+  <a href="#home" data-p="home" aria-label="Home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><span class="tip" data-t="n1"></span></a>
+  <a href="#routes" data-p="routes" aria-label="Routes"><svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h6a3.5 3.5 0 0 0 0-7h-4a3.5 3.5 0 0 1 0-7h5"/></svg><span class="tip" data-t="n2"></span></a>
+  <a href="#schedule" data-p="schedule" aria-label="Schedule"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg><span class="tip" data-t="n3"></span></a>
+  <a href="#news" data-p="news" aria-label="News"><svg viewBox="0 0 24 24"><path d="M5 5h11v14H7a2 2 0 0 1-2-2z"/><path d="M16 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/></svg><span class="tip" data-t="n5"></span></a>
+  <a href="#dev" data-p="dev" aria-label="Dev"><svg viewBox="0 0 24 24"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg><span class="tip" data-t="n6"></span></a>
+  <a href="#info" data-p="info" aria-label="Info"><svg viewBox="0 0 24 24"><path d="M4 6h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 3"/></svg><span class="tip" data-t="n4"></span></a>
+</nav>
+
+<div class="ov" id="ov"><div class="glass pn" id="pn"></div></div><div class="glass toast" id="toast"></div>
+<script>
+const D={
+ru:{pill:"Roblox · Трамвайная платформа",hsub:"ГУП «Кедровское трамвайное управление» — трамваи города Кедров в Roblox.",c1:"маршрута",c2b:"Кедров",c2:"город",
+aboutL:"О нас",aboutH:"Мы строим трамвайный город",aboutP1:"United Trams (UTrams) — проект в Roblox, где работает городской трамвай Кедрова: линии, остановки, депо и движение вагонов.",aboutP2:"Здесь пассажиры найдут маршруты, расписание и важную информацию о поездках.",
+t1b:"3 маршрута",t1s:"по всему городу",t2b:"10 остановок",t2s:"на самом длинном маршруте",t3b:"05:30–23:30",t3s:"время работы",t4s:"платформа проекта",
+gupL:"Оператор",gupH:"ГУП «Кедровское трамвайное управление»",gupP:"Государственное унитарное предприятие, которое обслуживает трамвайные линии Кедрова и следит за регулярностью движения.",
+rL:"Линии",rH:"Маршруты",rSel:"Маршрут",n1:"Главная",n2:"Маршруты",n3:"Расписание",n4:"Пассажирам",rInt:"Интервал",rFirst:"Первый",rLast:"Последний",min:"мин",every:"каждые",n5:"Новости",n6:"Разработка (PreUpdate)",nwL:"Новости",nwH:"Что нового",dvL:"PreUpdate",dvH:"Разработка",backN:"К новостям",backD:"К разработке",empty:"Пока здесь ничего нет",admQ:"Вы администрация проекта?",rStops:"Остановок",
+sL:"Время",sH:"Расписание",sRoute:"Маршрут",sStop:"Остановка",sDay:"День",wd:"Будни",we:"Выходные",nextL:"Ближайшие отправления",in:"через",none:"Сегодня рейсов больше нет",
+nowL:"Сейчас в Кедрове",run:"Работают маршруты: ",closed:"Движение закрыто, трамваи в депо",
+iL:"Пассажирам",iH:"Всё о поездке",f1L:"Разовая поездка",f1P:"Оплатить проезд можно у кондуктора или проездным «Кедр».",kL:"Проездной",kH:"Проездной «Кедр»",kP:"Оплатить проезд можно и по проездному «Кедр» — приложите его к валидатору при входе.",back:"К маршрутам",stL:"Конечная остановка",stInfoL:"Информация",stD:"Конечная остановка маршрутов: ",stR:"Маршруты",stT:"Время работы",soon:"Фото скоро появится",photo:"Фото",hint:"Нажмите на конечную остановку, чтобы открыть информацию и фото.",
+faqL:"Частые вопросы",q1:"Как оплатить проезд?",a1:"Приложите проездной «Кедр» к валидатору при входе или оплатите у кондуктора. Стоимость поездки — 80 ₽.",q2:"Когда ходят трамваи?",a2:"Первые трамваи выходят в 05:30, последние отправляются в 23:30.",q3:"Что делать при задержке?",a3:"Следите за новостями управления: движение на линии восстанавливают в порядке очерёдности.",
+cL:"Контакты",cP:"Диспетчерская работает круглосуточно. Игровой проект в Roblox."},
+en:{pill:"Roblox · Tram platform",hsub:"Kedrov Tram Authority — the trams of Kedrov city in Roblox.",c1:"routes",c2b:"Kedrov",c2:"city",
+aboutL:"About",aboutH:"We are building a tram city",aboutP1:"United Trams (UTrams) is a Roblox project featuring Kedrov's city tram: lines, stops, depot and live vehicle movement.",aboutP2:"Passengers can find routes, timetables and trip information here.",
+t1b:"3 routes",t1s:"across the city",t2b:"10 stops",t2s:"on the longest route",t3b:"05:30–23:30",t3s:"operating hours",t4s:"project platform",
+gupL:"Operator",gupH:"Kedrov Tram Authority (GUP)",gupP:"A state unitary enterprise that runs Kedrov's tram lines and keeps service on schedule.",
+rL:"Lines",rH:"Routes",rSel:"Route",n1:"Home",n2:"Routes",n3:"Timetable",n4:"Passengers",rInt:"Interval",rFirst:"First",rLast:"Last",min:"min",every:"every",n5:"News",n6:"Development (PreUpdate)",nwL:"News",nwH:"What's new",dvL:"PreUpdate",dvH:"Development",backN:"Back to news",backD:"Back to development",empty:"Nothing here yet",admQ:"Are you project staff?",rStops:"Stops",
+sL:"Time",sH:"Timetable",sRoute:"Route",sStop:"Stop",sDay:"Day",wd:"Weekdays",we:"Weekends",nextL:"Next departures",in:"in",none:"No more departures today",
+nowL:"Kedrov time now",run:"Routes in service: ",closed:"Service closed, trams are in the depot",
+iL:"Passengers",iH:"Trip essentials",f1L:"Single ride",f1P:"Pay the conductor or use the Kedr travel card.",kL:"Travel card",kH:"Kedr travel card",kP:"You can also pay for a ride with the Kedr travel card — tap it on the validator when boarding.",back:"Back to routes",stL:"Terminus stop",stInfoL:"Information",stD:"Terminus of routes: ",stR:"Routes",stT:"Operating hours",soon:"Photo coming soon",photo:"Photo",hint:"Tap a terminus stop to see its info and photos.",
+faqL:"FAQ",q1:"How do I pay?",a1:"Tap your Kedr card on the validator when boarding or pay the conductor. A ride costs 80 ₽.",q2:"When do trams run?",a2:"First trams leave at 05:30, the last ones depart at 23:30.",q3:"What if a tram is delayed?",a3:"Follow Authority news: service is restored in order of route priority.",
+cL:"Contacts",cP:"Dispatch works 24/7. A Roblox game project."}};
+/* ================= ДАННЫЕ ================= */
+const J=(r,e)=>r+" | "+e;
+const K={zhk:J("ЖК «Амплитуда Сердец»","Amplituda Serdets Residential Complex"),ver:J("Проспект Генерала Верещагина","General Vereshchagin Ave"),nag:J("Супермаркет «Нагнит»","Nagnit Supermarket"),nek:J("улица Некрасова","Nekrasova St"),bul:J("улица Булгакова","Bulgakova St"),gor:J("улица Максима Горького","Maxim Gorky St"),kot:J("улица Котина","Kotina St"),nik:J("улица Николая Викторовича","Nikolay Viktorovich St"),sev:J("Северный проспект","Severny Ave"),sch:J("Школа №925","School No. 925"),ran:J("Проспект Фаины Раневской","Faina Ranevskaya Ave"),dsa:J("Детский сад №398","Kindergarten No. 398"),mon:J("Универсам «Монетка»","Monetka Supermarket"),k110:J("улица Котина, 110","Kotina St, 110")};
+const tl=[K.kot,K.nik,K.sev,K.sch,K.ran],rt=(n,s)=>({n:String(n),a:"05:30",z:"23:30",v:[1,2.5],s});
+const DEF={routes:[rt(6,[K.zhk,K.ver,K.nek,K.bul,K.gor,...tl]),rt(1,[K.zhk,K.nag,K.nek,K.bul,K.gor,...tl]),rt(4,[K.dsa,K.mon,K.k110,...tl])],
+news:[{id:"n1",d:"2026-11-15",t:"Запуск сайта United Trams",te:"United Trams website is live",x:"Мы запустили сайт проекта: здесь маршруты, расписание, новости и материалы разработки.",xe:"We launched the project website: routes, timetable, news and development materials.",p:[]}],
+dev:[{id:"d1",d:"2026-11-10",t:"Первые тесты трамвая",te:"First tram tests",x:"Это пример записи из раздела разработки. Администратор может заменить её своими фото и текстами.",xe:"This is a sample development entry. An admin can replace it with real photos and text.",p:[]}],si:[]};
+let DATA=DEF,R=DEF.routes,U=null,CS=null,CP=null,L=localStorage.getItem("utl")||"ru";const S={r:0,s:0,d:0};
+const $=id=>document.getElementById(id),t=k=>D[L][k];
+const esc=x=>String(x??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sp=x=>{const a=x.split("|").map(y=>y.trim());return[a[0],a[1]||a[0]]},nm=x=>sp(x)[L=="ru"?0:1],rn=r=>nm(r.s[0])+" — "+nm(r.s.at(-1));
+const lx=(o,f)=>L=="en"&&o[f+"e"]?o[f+"e"]:(o[f]||"");
+const fn=x=>String(x).replace(".",L=="ru"?",":"."),fd=d=>{const x=new Date(d);return isNaN(x)?"":x.toLocaleDateString(L=="ru"?"ru-RU":"en-GB",{day:"numeric",month:"long",year:"numeric"})};
+const mn=x=>{const[a,b]=x.split(":").map(Number);return a*60+b},fm=x=>{x=Math.round(x*60);const h=Math.floor(x/3600)%24,m=Math.floor(x%3600/60),c=x%60;return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+(c?":"+String(c).padStart(2,"0"):"")};
+const pw=(n,f)=>{if(L!="ru")return f[3];const a=n%100,b=n%10;return a>10&&a<15?f[2]:b==1?f[0]:b>1&&b<5?f[1]:f[2]};
+const FR=["маршрут","маршрута","маршрутов","routes"],FS=["остановка","остановки","остановок","stops"];
+const chev='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+const ar=d=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="${d?"M9 5l7 7-7 7":"M15 5l-7 7 7 7"}"/></svg>`;
+const TR="https://i.postimg.cc/pVcNLGgg/Siluet-sovremennogo-tramvaa.png";
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(toast.k);toast.k=setTimeout(()=>e.classList.remove("on"),3200)}
+
+/* ================= СЕРВЕР ================= */
+/* Для синхронизации между устройствами вставьте сюда конфиг Firebase (Project settings → Web app) */
+const CFG={apiKey:"AIzaSyBUcqemiyed6ctB5BVY6dRrPFSUYKuFywE",authDomain:"unitedtrams.firebaseapp.com",projectId:"unitedtrams",appId:"1:145211231907:web:a836125dc8c32dd663b916"};
+const FB=!!CFG.apiKey;let API={};
+const mail=n=>[...n.trim().toLowerCase()].map(c=>c.codePointAt(0).toString(16)).join("")+"@utrams.app";
+const ls=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||"null"):localStorage.setItem(k,JSON.stringify(v));
+async function sha(x){x="ut"+x;if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(x));return[...new Uint8Array(b)].map(y=>y.toString(16).padStart(2,"0")).join("")}let h=5381;for(const c of x)h=(h*33^c.charCodeAt(0))>>>0;return String(h)}
+function localInit(){
+  const us=()=>ls("ut_u")||{},sess=()=>{const k=ls("ut_s"),u=us()[k];setUser(u?{id:k,nick:u.nick,role:u.role}:null)};
+  applyData(ls("ut_d")||{});sess();
+  API={async signUp(n,p){const u=us(),k=n.toLowerCase();if(u[k])throw"Этот ник уже занят";u[k]={nick:n,h:await sha(p),role:Object.keys(u).length?"pending":"owner"};ls("ut_u",u);ls("ut_s",k);sess()},
+  async signIn(n,p){const k=n.toLowerCase(),u=us()[k];if(!u||u.h!==await sha(p))throw"Неверный ник или пароль";ls("ut_s",k);sess()},
+  signOut(){ls("ut_s",null);sess()},saveData(d){ls("ut_d",d);applyData(d)},
+  users(cb){cb(Object.entries(us()).map(([id,v])=>({id,nick:v.nick,role:v.role})));return()=>{}},
+  setRole(id,r){const u=us();u[id].role=r;ls("ut_u",u);sess()}};
+}
+async function initDB(){
+  if(!FB){localInit();return}
+  try{
+    const V="https://www.gstatic.com/firebasejs/10.12.2/firebase-",[A,Au,F]=await Promise.all(["app","auth","firestore"].map(m=>import(V+m+".js")));
+    const app=A.initializeApp(CFG),au=Au.getAuth(app),db=F.getFirestore(app),dr=F.doc(db,"site","data");
+    F.onSnapshot(dr,x=>applyData(x.exists()?x.data():{}),()=>applyData(ls("ut_d")||{}));
+    let un=null;
+    Au.onAuthStateChanged(au,u=>{un&&un();un=null;if(!u){setUser(null);return}
+      un=F.onSnapshot(F.doc(db,"users",u.uid),x=>setUser({id:u.uid,nick:"?",role:"pending",...(x.exists()?x.data():{})}))});
+    API={async signUp(n,p){const c=await Au.createUserWithEmailAndPassword(au,mail(n),p);await F.setDoc(F.doc(db,"users",c.user.uid),{nick:n,role:"pending"})},
+    signIn:(n,p)=>Au.signInWithEmailAndPassword(au,mail(n),p),signOut:()=>Au.signOut(au),saveData:d=>F.setDoc(dr,d),
+    users:cb=>F.onSnapshot(F.collection(db,"users"),x=>cb(x.docs.map(d=>({id:d.id,...d.data()})))),
+    setRole:(id,r)=>F.updateDoc(F.doc(db,"users",id),{role:r})};
+  }catch(e){console.error(e);localInit();toast("Firebase недоступен — локальный режим")}
+}
+function applyData(d){DATA={...DEF,...d};R=DATA.routes||[];if(S.r>=R.length)S.r=0;if(R[S.r]&&S.s>=R[S.r].s.length)S.s=0;renderAll()}
+
+/* ================= UI: dropdown, маршруты, расписание ================= */
+function dd(label,opts,val,cb){
+  const w=document.createElement("div");w.className="dd";
+  w.innerHTML=`<div class="lab">${label}</div><button class="ddb" aria-haspopup="listbox"><span class="v"></span>${chev}</button><div class="ddm" role="listbox"></div>`;
+  const b=w.querySelector(".ddb"),m=w.querySelector(".ddm");w.querySelector(".v").textContent=opts[val].t;
+  opts.forEach((o,i)=>{const x=document.createElement("button");x.className="ddo"+(i==val?" sel":"");x.style.setProperty("--i",i);x.innerHTML=(o.b?`<b>${esc(o.b)}</b>`:"")+`<span>${esc(o.t)}</span>`;x.onclick=e=>{e.stopPropagation();w.classList.remove("open");cb(i)};m.appendChild(x)});
+  b.onclick=e=>{e.stopPropagation();const o=w.classList.contains("open");document.querySelectorAll(".dd.open").forEach(d=>d.classList.remove("open"));if(!o)w.classList.add("open")};
+  return w;
+}
+document.addEventListener("click",()=>document.querySelectorAll(".dd.open").forEach(d=>d.classList.remove("open")));
+function stats(){const n=R.length,m=Math.max(0,...R.map(r=>r.s.length));$("hc1").innerHTML=`<b>${n}</b>${pw(n,FR)}`;$("ts1").textContent=n+" "+pw(n,FR);$("ts2").textContent=m+" "+pw(m,FS)}
+function drawRoutes(){
+  const c=$("rcard");c.innerHTML="";if(!R.length){c.innerHTML=`<p class="empty">${t("empty")}</p>`;return}
+  const r=R[S.r],v=r.v||[1,2.5];
+  c.appendChild(dd(t("rSel"),R.map(x=>({b:x.n,t:rn(x)})),S.r,i=>{S.r=i;S.s=0;drawRoutes();drawSched()}));
+  const d=document.createElement("div");
+  d.innerHTML=`<div class="meta"><span class="glass chip">${t("wd")}: <b style="margin-left:6px">${fn(v[0])} ${t("min")}</b></span><span class="glass chip">${t("we")}: <b style="margin-left:6px">${fn(v[1])} ${t("min")}</b></span><span class="glass chip">${t("rFirst")}: <b style="margin-left:6px">${esc(r.a)}</b></span><span class="glass chip">${t("rLast")}: <b style="margin-left:6px">${esc(r.z)}</b></span><span class="glass chip">${t("rStops")}: <b style="margin-left:6px">${r.s.length}</b></span></div>
+  <ul class="stops">${r.s.map((x,k)=>{const e=k==0||k==r.s.length-1;return `<li class="${e?"e":""}" style="animation-delay:${k*70}ms">${e?`<a class="sb" href="#stop-${encodeURIComponent(sp(x)[0])}">${esc(nm(x))}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`:esc(nm(x))}${k?`<em>+${k*3} ${t("min")}</em>`:""}</li>`}).join("")}</ul><p class="hint">${t("hint")}</p>`;
+  c.appendChild(d);
+}
+function drawSched(){
+  const c=$("scard");c.innerHTML="";if(!R.length){c.innerHTML=`<p class="empty">${t("empty")}</p>`;return}
+  const r=R[S.r];
+  const row=document.createElement("div");row.className="row";
+  row.appendChild(dd(t("sRoute"),R.map(x=>({b:x.n,t:rn(x)})),S.r,i=>{S.r=i;S.s=0;drawRoutes();drawSched()}));
+  row.appendChild(dd(t("sStop"),r.s.map(x=>({t:nm(x)})),S.s,i=>{S.s=i;drawSched()}));
+  c.appendChild(row);
+  const dw=dd(t("sDay"),[{t:t("wd")},{t:t("we")}],S.d,i=>{S.d=i;drawSched()});dw.style.marginTop="16px";c.appendChild(dw);
+  const n=document.createElement("div");n.id="nx";n.style.marginTop="22px";c.appendChild(n);next();
+}
+function msk(){return new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/Moscow"}))}
+function next(){
+  const n=$("nx");if(!n||!R.length)return;
+  const r=R[S.r],iv=Math.max(.5,(r.v||[1,2.5])[S.d]),d=msk(),cur=d.getHours()*60+d.getMinutes()+d.getSeconds()/60,off=S.s*3,o=[];
+  for(let x=mn(r.a)+off;x<=mn(r.z)+off&&o.length<5;x+=iv)if(x>=cur-.001)o.push(x);
+  n.innerHTML=`<div class="lab">${t("nextL")}</div>`+(o.length?o.map((x,k)=>`<div class="dep" style="animation-delay:${k*60}ms"><span>${fm(x)}</span><span>${t("in")} ${Math.max(0,Math.ceil(x-cur))} ${t("min")}</span></div>`).join(""):`<div class="dep"><span>${t("none")}</span></div>`);
+}
+function tick(){
+  const d=msk(),cur=d.getHours()*60+d.getMinutes();$("clock").textContent=fm(cur);
+  const k=R.filter(r=>cur>=mn(r.a)&&cur<=mn(r.z)).length;$("state").textContent=k?t("run")+k+" / "+R.length:t("closed");
+}
+/* ================= новости / разработка ================= */
+const cover=p=>p.p&&p.p.length?`<img class="im" src="${esc(p.p[0])}" alt="" loading="lazy">`:`<div class="im ph" style="--g:150deg"><img src="${TR}" alt=""></div>`;
+function drawList(ty){
+  const el=$(ty+"List"),a=DATA[ty]||[];
+  el.innerHTML=a.length?a.map((p,i)=>`<a class="glass post hov" href="#post-${ty}-${esc(p.id)}" style="--d:${i*80}ms"><div class="cv">${cover(p)}</div><div class="bd"><div class="lab">${fd(p.d)}</div><h3>${esc(lx(p,"t"))}</h3><p>${esc(lx(p,"x"))}</p></div></a>`).join(""):`<p class="empty">${t("empty")}</p>`;
+}
+function drawPost(){
+  const p=(DATA[CP.ty]||[]).find(x=>x.id==CP.id);if(!p){location.hash="#"+(CP.ty=="dev"?"dev":"news");return}
+  $("pbk").href="#"+CP.ty;$("pbk").querySelector("span").textContent=t(CP.ty=="dev"?"backD":"backN");
+  $("pH").textContent=lx(p,"t");$("pD").textContent=fd(p.d);
+  const has=p.p&&p.p.length;
+  $("pB").innerHTML=(has?`<div class="car" id="pcar"></div>`:"")+`<div class="glass card ptx">${lx(p,"x").split("\n").filter(Boolean).map(l=>`<p>${esc(l)}</p>`).join("")}</div>`;
+  if(has)carousel($("pcar"),p.p);
+}
+function drawStop(n){
+  const rs=R.filter(r=>sp(r.s[0])[0]==n||sp(r.s.at(-1))[0]==n);
+  if(!rs.length){location.hash="routes";return}
+  const full=[rs[0].s[0],rs[0].s.at(-1)].find(x=>sp(x)[0]==n),si=(DATA.si||[]).find(x=>x.k==n)||{},ph=si.p&&si.p.length?si.p:[0,0,0,0,0],ds=lx(si,"d"),v=rs[0].v||[1,2.5];
+  $("stN").textContent=nm(full);
+  $("stBody").innerHTML=`<div class="car" id="car"></div><div class="glass card hov"><div class="lab">${t("stInfoL")}</div><h2>${esc(nm(full))}</h2><p>${t("stD")}${rs.map(r=>esc(r.n)).join(", ")}.</p>${ds?`<p>${esc(ds)}</p>`:""}<div class="tiles"><div class="tile"><b>${rs.map(r=>"№"+esc(r.n)).join(" · ")}</b><small>${t("stR")}</small></div><div class="tile"><b>${esc(rs[0].a)}–${esc(rs[0].z)}</b><small>${t("stT")}</small></div><div class="tile"><b>${fn(v[0])} ${t("min")}</b><small>${t("wd")}</small></div><div class="tile"><b>${fn(v[1])} ${t("min")}</b><small>${t("we")}</small></div></div></div>`;
+  carousel($("car"),ph);
+}
+function renderAll(){
+  stats();drawRoutes();drawSched();drawList("news");drawList("dev");tick();
+  const p=document.querySelector(".page.on");if(p&&p.id=="stop"&&CS)drawStop(CS);if(p&&p.id=="post"&&CP)drawPost();
+}
+/* ================= карусель ================= */
+function carousel(el,items){
+  const n=items.length,AR=items.map(()=>9/16);let c=0,sx=null,mv=0,bz=0;
+  const fr=(p,i)=>p?`<img class="bgb" src="${esc(p)}" alt="" draggable="false"><img class="pi" src="${esc(p)}" alt="" draggable="false">`:`<div class="im ph" style="--g:${i*47+120}deg"><img src="${TR}" alt=""><span>${t("soon")}</span></div>`;
+  el.innerHTML=`<div class="vw" tabindex="0">${items.map((p,i)=>`<div class="fr${i?"":" on"}">${fr(p,i)}</div>`).join("")}${n>1?`<button class="nv l" data-d="-1" aria-label="Prev">${ar(0)}</button><button class="nv r" data-d="1" aria-label="Next">${ar(1)}</button><div class="cnt"></div><div class="dots">${items.map((_,i)=>`<button data-i="${i}" class="${i?"":"on"}" aria-label="${i+1}"></button>`).join("")}</div>`:""}</div>`;
+  const f=[...el.querySelectorAll(".fr")],dt=[...el.querySelectorAll(".dots button")],vw=el.querySelector(".vw"),cn=el.querySelector(".cnt");
+  const fit=()=>{const w=vw.clientWidth;if(w)vw.style.height=Math.max(220,Math.min(w*AR[c],innerHeight*.78))+"px"};
+  const num=()=>{if(cn)cn.textContent=String(c+1).padStart(2,"0")+" / "+String(n).padStart(2,"0")};
+  items.forEach((p,i)=>{if(!p)return;const im=new Image();im.onload=()=>{AR[i]=im.naturalHeight/im.naturalWidth;if(i==c)fit()};im.src=p});
+  if(window.ResizeObserver)new ResizeObserver(fit).observe(vw);
+  fit();num();
+  function show(i,d){
+    if(i==c||bz)return;bz=1;const nw=f[i],od=f[c],E="cubic-bezier(.77,0,.18,1)";
+    od.style.zIndex=1;nw.style.zIndex=2;nw.classList.add("on");
+    nw.animate({clipPath:[d>0?"inset(0 0 0 100%)":"inset(0 100% 0 0)","inset(0 0 0 0)"]},{duration:950,easing:E});
+    nw.lastElementChild.animate({transform:["scale(1.3)","scale(1)"]},{duration:1400,easing:"cubic-bezier(.2,.7,.2,1)"});
+    od.lastElementChild.animate({transform:["scale(1)","scale(.9)"]},{duration:950,easing:E});
+    setTimeout(()=>{od.classList.remove("on");od.style.zIndex="";bz=0},950);
+    c=i;dt.forEach((b,k)=>b.classList.toggle("on",k==i));fit();num();
+  }
+  const go=d=>show((c+d+n)%n,d),to=i=>show(i,i>c?1:-1);
+  vw.onpointerdown=e=>{if(e.target.closest("button"))return;sx=e.clientX;mv=0;vw.setPointerCapture(e.pointerId)};
+  vw.onpointermove=e=>{if(sx!==null)mv=e.clientX-sx};
+  vw.onpointerup=()=>{if(sx!==null&&Math.abs(mv)>45)go(mv<0?1:-1);sx=null;mv=0};
+  vw.onkeydown=e=>{if(e.key=="ArrowLeft")go(-1);if(e.key=="ArrowRight")go(1)};
+  el.querySelectorAll(".nv").forEach(b=>b.onclick=()=>go(+b.dataset.d));
+  dt.forEach(b=>b.onclick=()=>to(+b.dataset.i));
+}
+/* ================= аккаунты и админка ================= */
+const canAdm=()=>!!U&&(U.role=="admin"||U.role=="owner");
+const ROLE={owner:"Владелец",admin:"Администратор",pending:"Ожидает подтверждения",blocked:"Доступ закрыт"};
+let MODE=null,AT="news",ED=null,RD=null,UN=null;
+function ov(h){$("pn").innerHTML=h;$("ov").classList.add("on")}
+function closeOv(){$("ov").classList.remove("on");UN&&UN();UN=null;MODE=null}
+const hdr=(h,sub)=>`<div class="ph2"><div><div class="lab">${sub}</div><h2>${h}</h2></div><button class="bt" data-c aria-label="Close">✕</button></div>`;
+function setUser(u){U=u;const a=canAdm();$("admBtn").style.display=a?"grid":"none";document.querySelectorAll(".apill").forEach(e=>e.style.display=a?"none":"");
+  if(MODE=="admin")adminView();else if(MODE=="auth")authView("in")}
+function authView(m){
+  MODE="auth";
+  if(U){ov(hdr("Аккаунт","Администрация")+`<p class="pp">${esc(U.nick)} · ${ROLE[U.role]||U.role}</p>${U.role=="pending"?`<p class="pp">Владелец проекта должен подтвердить аккаунт. После этого здесь появится админ-панель.</p>`:""}<div class="row2">${canAdm()?`<button class="bt m" data-open>Открыть админ-панель</button>`:""}<button class="bt" data-out>Выйти</button></div>`);return}
+  const up=m=="up";
+  ov(hdr(up?"Регистрация":"Вход","Вы администрация проекта?")+`<div class="tbs"><button class="bt ${up?"":"on"}" data-m="in">Войти</button><button class="bt ${up?"on":""}" data-m="up">Зарегистрироваться</button></div><div class="f"><input id="an" placeholder="Ник (3–16 символов)" maxlength="16" autocomplete="username"><input id="ap" type="password" placeholder="Пароль (от 6 символов)" autocomplete="${up?"new-password":"current-password"}">${up?`<input id="ap2" type="password" placeholder="Повторите пароль" autocomplete="new-password">`:""}<div class="msg" id="am"></div><button class="bt m" data-go="${up?"up":"in"}">${up?"Создать аккаунт":"Войти"}</button></div>`);
+}
+async function submitAuth(m){
+  const n=$("an").value.trim(),p=$("ap").value,ms=$("am");ms.textContent="";
+  try{
+    if(!/^[A-Za-z0-9_А-Яа-яЁё]{3,16}$/.test(n))throw"Ник: 3–16 символов — буквы, цифры, _";
+    if(p.length<6)throw"Пароль — минимум 6 символов";
+    if(m=="up"){if(p!==$("ap2").value)throw"Пароли не совпадают";await API.signUp(n,p)}else await API.signIn(n,p);
+  }catch(e){const c=e&&e.code||"";ms.textContent=typeof e=="string"?e:/credential|password|user-not-found/.test(c)?"Неверный ник или пароль":/in-use/.test(c)?"Этот ник уже занят":/network/.test(c)?"Нет связи с сервером":(e&&e.message)||"Ошибка"}
+}
+function adminView(){
+  if(!canAdm()){authView("in");return}
+  MODE="admin";UN&&UN();UN=null;
+  const tabs=[["news","Новости"],["dev","Разработка"],["routes","Маршруты"],["stops","Остановки"]];if(U.role=="owner")tabs.push(["acc","Аккаунты"]);
+  ov(hdr("Админ-панель",esc(U.nick))+(FB?"":`<p class="pp">Локальный режим: данные хранятся только на этом устройстве. Для синхронизации подключите Firebase (объект CFG в коде).</p>`)+`<div class="tbs">${tabs.map(([k,x])=>`<button class="bt ${AT==k?"on":""}" data-tab="${k}">${x}</button>`).join("")}<button class="bt" data-out>Выйти</button></div><div id="ab">${AT=="news"||AT=="dev"?postsTab(AT):AT=="routes"?routesTab():AT=="stops"?stopsTab():'<div id="ul"></div>'}</div>`);
+  if(AT=="acc")UN=API.users(renderUsers);
+}
+function postsTab(ty){
+  const e=ED&&ED.ty==ty?ED.p:{},v=k=>esc(e[k]);
+  return `<div class="f"><input id="pt" placeholder="Заголовок" value="${v("t")}"><input id="pte" placeholder="Title (EN, необязательно)" value="${v("te")}"><textarea id="px" rows="5" placeholder="Текст">${v("x")}</textarea><textarea id="pxe" rows="3" placeholder="Text (EN, необязательно)">${v("xe")}</textarea><textarea id="pp" rows="3" placeholder="Фото — ссылки, по одной в строке">${esc((e.p||[]).join("\n"))}</textarea><div class="row2" style="margin:0"><button class="bt m" data-sp="${ty}">${e.id?"Сохранить":"Опубликовать"}</button>${e.id?'<button class="bt" data-cancel>Отмена</button>':""}</div></div><div class="lab" style="margin-top:24px">Опубликовано</div>`+(DATA[ty]||[]).map(p=>`<div class="li2"><span>${esc(p.t)}</span><span class="row2" style="margin:0"><button class="bt" data-ed="${ty}:${esc(p.id)}">Изменить</button><button class="bt" data-dl="${ty}:${esc(p.id)}">Удалить</button></span></div>`).join("");
+}
+function routesTab(){
+  RD=RD||JSON.parse(JSON.stringify(R));
+  return RD.map((r,i)=>{const v=r.v||[1,2.5];return `<div class="rb"><div class="g4"><label class="fl">№<input data-k="n" value="${esc(r.n)}"></label><label class="fl">Первый рейс<input data-k="a" value="${esc(r.a)}"></label><label class="fl">Последний<input data-k="z" value="${esc(r.z)}"></label><label class="fl">Будни, мин<input data-k="v1" value="${v[0]}"></label><label class="fl">Выходные, мин<input data-k="v2" value="${v[1]}"></label></div><label class="fl" style="margin-top:10px">Остановки — по одной в строке: «Рус | English». Первая и последняя — конечные<textarea data-k="s" rows="6">${esc(r.s.join("\n"))}</textarea></label><div class="row2"><button class="bt" data-dr="${i}">Удалить маршрут</button></div></div>`}).join("")+`<div class="row2"><button class="bt" data-ar>+ Добавить маршрут</button><button class="bt m" data-sr>Сохранить маршруты</button></div>`;
+}
+function collectR(){RD=[...document.querySelectorAll("#ab .rb")].map(b=>{const g=k=>b.querySelector(`[data-k=${k}]`).value.trim(),num=x=>parseFloat(x.replace(",","."))||1;return{n:g("n"),a:g("a"),z:g("z"),v:[num(g("v1")),num(g("v2"))],s:g("s").split("\n").map(x=>x.trim()).filter(Boolean)}})}
+function terms(){const m=new Map();R.forEach(r=>[r.s[0],r.s.at(-1)].forEach(x=>m.set(sp(x)[0],x)));return[...m]}
+function stopsTab(){
+  return `<p class="pp">Фото (ссылки, по одной в строке) и описание конечных остановок.</p>`+terms().map(([k,x])=>{const o=(DATA.si||[]).find(y=>y.k==k)||{};return `<div class="rb" data-k2="${esc(k)}"><b style="font-size:13px">${esc(nm(x))}</b><label class="fl" style="margin-top:8px">Фото<textarea data-k="p" rows="3">${esc((o.p||[]).join("\n"))}</textarea></label><label class="fl">Описание (рус)<textarea data-k="d" rows="3">${esc(o.d)}</textarea></label><label class="fl">Description (EN)<textarea data-k="de" rows="3">${esc(o.de)}</textarea></label></div>`}).join("")+`<div class="row2"><button class="bt m" data-ss>Сохранить остановки</button></div>`;
+}
+function renderUsers(list){const e=$("ul");if(!e)return;e.innerHTML=list.map(u=>`<div class="li2"><span>${esc(u.nick)}<br><small>${ROLE[u.role]||u.role}</small></span>${u.role=="owner"||u.id==U.id?"":`<span class="row2" style="margin:0"><button class="bt" data-role="${esc(u.id)}:admin">Админ</button><button class="bt" data-role="${esc(u.id)}:pending">Ожидает</button><button class="bt" data-role="${esc(u.id)}:blocked">Закрыть</button></span>`}</div>`).join("")}
+const save=async o=>{try{await API.saveData({...DATA,...o})}catch(e){toast("Не удалось сохранить: "+(e.code||e.message||e));throw e}};
+$("pn").addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  try{
+    if("c" in d)closeOv();
+    else if(d.m)authView(d.m);
+    else if(d.go)await submitAuth(d.go);
+    else if("out" in d){MODE=null;await API.signOut();closeOv()}
+    else if("open" in d)adminView();
+    else if(d.tab){RD=null;AT=d.tab;ED=null;adminView()}
+    else if(d.sp){const ty=d.sp,g=i=>$(i).value.trim();if(!g("pt")){toast("Введите заголовок");return}
+      const o=ED&&ED.ty==ty?ED.p:null,p={id:o?o.id:Date.now().toString(36),d:o?o.d:new Date().toISOString().slice(0,10),t:g("pt"),te:g("pte"),x:g("px"),xe:g("pxe"),p:g("pp").split("\n").map(x=>x.trim()).filter(Boolean)},arr=[...DATA[ty]],i=arr.findIndex(x=>x.id==p.id);
+      if(i>=0)arr[i]=p;else arr.unshift(p);await save({[ty]:arr});ED=null;toast("Опубликовано");adminView()}
+    else if("cancel" in d){ED=null;adminView()}
+    else if(d.ed){const[ty,id]=d.ed.split(":");ED={ty,p:DATA[ty].find(x=>x.id==id)};adminView()}
+    else if(d.dl){const[ty,id]=d.dl.split(":");if(confirm("Удалить запись?")){await save({[ty]:DATA[ty].filter(x=>x.id!=id)});toast("Удалено");adminView()}}
+    else if("ar" in d){collectR();RD.push({n:"",a:"05:30",z:"23:30",v:[1,2.5],s:[]});adminView()}
+    else if(d.dr!==undefined){collectR();RD.splice(+d.dr,1);adminView()}
+    else if("sr" in d){collectR();const tm=/^\d{1,2}:\d{2}$/;
+      if(RD.some(r=>!r.n||r.s.length<2||!tm.test(r.a)||!tm.test(r.z))){toast("У каждого маршрута: номер, время ЧЧ:ММ и минимум 2 остановки");return}
+      await save({routes:RD});RD=null;toast("Маршруты сохранены");adminView()}
+    else if("ss" in d){const si=[...document.querySelectorAll("[data-k2]")].map(x=>{const g=k=>x.querySelector(`[data-k=${k}]`).value.trim();return{k:x.dataset.k2,p:g("p").split("\n").map(y=>y.trim()).filter(Boolean),d:g("d"),de:g("de")}}).filter(o=>o.p.length||o.d||o.de);
+      await save({si});toast("Остановки сохранены");adminView()}
+    else if(d.role){const i=d.role.lastIndexOf(":");await API.setRole(d.role.slice(0,i),d.role.slice(i+1));toast("Роль обновлена")}
+  }catch(_){}
+});
+$("ov").onclick=e=>{if(e.target==$("ov"))closeOv()};
+addEventListener("keydown",e=>{if(e.key=="Escape")closeOv()});
+$("admBtn").onclick=adminView;
+document.addEventListener("click",e=>{if(e.target.closest("[data-adm]"))canAdm()?adminView():authView("in")});
+/* ================= язык, навигация, эффекты ================= */
+function setLang(l){
+  L=l;localStorage.setItem("utl",l);document.documentElement.lang=l;
+  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));
+  $("lang").classList.toggle("en",l=="en");
+  document.querySelectorAll("#lang button").forEach(b=>b.classList.toggle("on",b.dataset.l==l));
+  renderAll();
+}
+document.querySelectorAll("#lang button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+const P=["home","routes","schedule","news","dev","info"];
+function go(){
+  let h=location.hash.slice(1);if(h=="about")return;
+  if(h.startsWith("stop-")){CS=decodeURIComponent(h.slice(5));h="stop"}
+  else if(h.startsWith("post-")){const q=h.split("-");CP={ty:q[1],id:q[2]};h="post"}
+  else if(!P.includes(h))h="home";
+  const act=h=="stop"?"routes":h=="post"?(CP.ty=="dev"?"dev":"news"):h;
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on",p.id==h));
+  document.querySelectorAll("#dock a").forEach(a=>a.classList.toggle("on",a.dataset.p==act));
+  $("dock").style.setProperty("--i",P.indexOf(act));
+  if(h=="stop")drawStop(CS);if(h=="post")drawPost();
+  window.scrollTo(0,0);
+}
+addEventListener("hashchange",go);
+$("dn").onclick=e=>{e.preventDefault();$("about").scrollIntoView({behavior:"smooth"})};
+document.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const q=b.parentElement,o=!q.classList.contains("open");q.parentElement.querySelectorAll(".qa.open").forEach(x=>{x.classList.remove("open");x.firstElementChild.setAttribute("aria-expanded","false")});if(o){q.classList.add("open");b.setAttribute("aria-expanded","true")}});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const x=e.target;x.classList.add("in");io.unobserve(x);setTimeout(()=>x.style.transitionDelay="",1600)}}),{threshold:.08});
+document.querySelectorAll(".card,.tile,.pagehead,.qa").forEach(e=>{e.classList.add("rv");e.style.transitionDelay=(Array.from(e.parentElement.children).indexOf(e)*90)+"ms";io.observe(e)});
+const ps=$("pass");ps.onpointermove=e=>{const b=ps.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;ps.style.transform=`perspective(900px) rotateY(${x*16}deg) rotateX(${-y*16}deg) scale(1.03)`};ps.onpointerleave=()=>ps.style.transform="";
+document.addEventListener("pointermove",e=>{document.querySelectorAll(".hov").forEach(g=>{const b=g.getBoundingClientRect();g.style.setProperty("--mx",e.clientX-b.left+"px");g.style.setProperty("--my",e.clientY-b.top+"px")})},{passive:true});
+setLang(L);go();initDB();setInterval(()=>{tick();next()},20000);
+</script>
+</body>
+</html>
